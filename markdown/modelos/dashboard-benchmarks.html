@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard de benchmarks de modelos – Fábrica agêntica</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--txt:#e2e8f0;--mut:#94a3b8;--green:#16a34a;--greenbg:#14532d;--amber:#f59e0b;--amberbg:#451a03;--red:#ef4444;--redbg:#450a0a;--blue:#38bdf8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
+header{padding:24px clamp(12px,4vw,40px) 8px}
+h1{margin:0 0 6px;font-size:clamp(20px,3vw,28px)}
+h2{font-size:18px;margin:28px 0 10px}
+.sub{color:var(--mut);font-size:14px;margin:0}
+main{padding:0 clamp(12px,4vw,40px) 40px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+.card{background:var(--card);border:1px solid var(--line);border-left-width:6px;border-radius:10px;padding:14px 16px}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{margin:0;font-size:14px}
+.card.ok{border-left-color:var(--green);background:linear-gradient(0deg,var(--card),var(--greenbg))}
+.card.warn{border-left-color:var(--amber);background:linear-gradient(0deg,var(--card),var(--amberbg))}
+.card.gap{border-left-color:var(--red)}
+.wrap{max-height:75vh;overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:1100px;font-size:13.5px}
+thead th{position:sticky;top:0;z-index:2;background:#0b1220;color:var(--blue);text-align:right;padding:10px 12px;border-bottom:2px solid var(--line);white-space:nowrap}
+thead th:first-child,thead th:nth-child(2){text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+tbody td:first-child,tbody td:nth-child(2){text-align:left}
+tbody td:first-child{position:sticky;left:0;background:var(--card);z-index:1;font-weight:600}
+thead th:first-child{position:sticky;left:0;z-index:3}
+tbody tr:hover td{background:#273449}
+tr.best td{background:var(--greenbg)!important;color:#bbf7d0;font-weight:600}
+tr.best td:first-child{border-left:5px solid var(--green)}
+td.nd{color:var(--mut);font-style:italic}
+td.fix{background:var(--amberbg);color:#fde68a;font-weight:700}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.tag.g{background:var(--green);color:#fff}
+.tag.a{background:var(--amber);color:#1c1917}
+ol,ul{margin:6px 0 0;padding-left:22px}
+li{margin:4px 0;font-size:14px}
+.note{color:var(--mut);font-size:13px;margin-top:10px}
+.legend span{display:inline-block;margin-right:14px;font-size:13px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+</style>
+</head>
+<body>
+<header>
+<h1>Dashboard de benchmarks de modelos: fase implement</h1>
+<p class="sub">Fábrica agêntica · dados da AA Coding Agent Index v2.0 (tabela ao vivo, lida em 31/10/2026) · câmbio PTAX R$ 5,4212</p>
+</header>
+<main>
+<div class="cards">
+<div class="card ok"><h3>🟢 Ponto de equilíbrio no implement: GPT-6.1 Sol (Codex)</h3><p>Composta 53,6 contra 61,1 do topo (Opus 5.5): perde 7,5 pontos e custa 7,6 vezes menos por tarefa (R$ 8,13 contra R$ 61,91). Rende 6,60 pontos por real.</p></div>
+<div class="card warn"><h3>⚠️ Correção: DeepSeek é 3º em FrontierCode</h3><p>O DeepSeek V4.1 Flash (Codex) faz 52,6, atrás do Opus 5.5 (56,0) e do Devin Fusion (53,6, configuração de dois modelos, fora desta tabela). Não é o 2º, como dizia o relatório. O Terminal-Bench dele é fraco (28 a 31 contra 53 ou mais dos outros).</p></div>
+</div>
+
+<h2>Comparativo por modelo único (agente + modelo)</h2>
+<p class="legend"><span><i class="sw" style="background:var(--green)"></i>Ponto de equilíbrio</span><span><i class="sw" style="background:var(--amber)"></i>Correção</span><span><i class="sw" style="background:var(--mut)"></i>N/D = sem dado</span></p>
+<div class="wrap" role="region" aria-label="Tabela comparativa" tabindex="0">
+<table>
+<thead><tr>
+<th>Modelo (agente)</th><th>Empresa</th><th>Índice de agentes</th><th>FrontierCode</th><th>Terminal-Bench 4.0</th><th>SWE-Atlas</th><th>Índice de codificação</th><th>Custo por tarefa</th><th>Custo por 1M de saída</th><th>Composta 40/30/30</th><th>Pontos por real</th>
+</tr></thead>
+<tbody>
+<tr><td>Opus 5.5 (Claude Code, max)</td><td>Anthropic</td><td>61,7</td><td>56,0</td><td>63,1</td><td>65,9</td><td class="nd">N/D</td><td>US$ 11,42 (R$ 61,91)</td><td>US$ 20 (R$ 108,42)</td><td>61,1</td><td>0,99</td></tr>
+<tr><td>Copilot Fusion (max)</td><td>GitHub</td><td>59,9</td><td>51,4</td><td>71,2</td><td>57,0</td><td class="nd">N/D</td><td>US$ 5,59 (R$ 30,30)</td><td class="nd">N/D</td><td>59,0</td><td>1,95</td></tr>
+<tr><td>Gemini 4 Carbon (Antigravity)</td><td>Google</td><td>59,4</td><td>50,9</td><td>63,6</td><td>63,7</td><td class="nd">N/D</td><td>US$ 7,74 (R$ 41,96)</td><td class="nd">N/D</td><td>58,5</td><td>1,40</td></tr>
+<tr><td>Sonnet 5.5 (Claude Code, max)</td><td>Anthropic</td><td>59,3</td><td>47,6</td><td>66,2</td><td>64,2</td><td class="nd">N/D</td><td>US$ 13,30 (R$ 72,10)</td><td>US$ 10 (R$ 54,21)</td><td>58,2</td><td>0,81</td></tr>
+<tr><td>Fable 5.1 (Claude Code, max)</td><td>Anthropic</td><td>57,6</td><td>48,9</td><td>57,6</td><td>66,4</td><td>80,7</td><td>US$ 11,53 (R$ 62,51)</td><td>US$ 50 (R$ 271,06)</td><td>56,8</td><td>0,91</td></tr>
+<tr><td>GPT-6 Astra (Codex, max)</td><td>OpenAI</td><td>54,7</td><td>49,3</td><td>55,6</td><td>59,1</td><td>76,9</td><td>US$ 7,04 (R$ 38,17)</td><td>US$ 50 (R$ 271,06)</td><td>54,1</td><td>1,42</td></tr>
+<tr class="best"><td>GPT-6.1 Sol (Codex, max) <span class="tag g">equilíbrio</span></td><td>OpenAI</td><td>54,1</td><td>49,4</td><td>53,0</td><td>59,9</td><td class="nd">N/D</td><td>US$ 1,50 (R$ 8,13)</td><td>US$ 10 (R$ 54,21)</td><td>53,6</td><td>6,60</td></tr>
+<tr><td>GPT-6.1 Terra High (Codex)</td><td>OpenAI</td><td>46,3</td><td>43,5</td><td>42,4</td><td>53,0</td><td class="nd">N/D</td><td>US$ 0,54 (R$ 2,93)</td><td class="nd">N/D</td><td>46,0</td><td>15,7</td></tr>
+<tr><td>DeepSeek V4.1 Flash (Codex, max) <span class="tag a">3º FrontierCode</span></td><td>DeepSeek</td><td>47,3</td><td class="fix">52,6 (3º)</td><td>28,3</td><td>61,0</td><td class="nd">N/D</td><td>US$ 0,39 (R$ 2,11)</td><td>US$ 0,60 (R$ 3,25)</td><td>47,8</td><td>22,6</td></tr>
+<tr><td>DeepSeek V4.1 Flash (harness próprio)</td><td>DeepSeek</td><td>46,3</td><td>46,5</td><td>30,8</td><td>61,6</td><td class="nd">N/D</td><td>US$ 0,30 (R$ 1,63)</td><td>US$ 0,60 (R$ 3,25)</td><td>46,3</td><td>28,5</td></tr>
+<tr><td>GPT-6 Luna (Codex, max)</td><td>OpenAI</td><td>31,1</td><td>39,5</td><td>15,7</td><td>38,2</td><td class="nd">N/D</td><td>US$ 0,16 (R$ 0,87)</td><td class="nd">N/D</td><td>32,0</td><td>36,9</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Composta = 40% FrontierCode + 30% Terminal-Bench 4.0 + 30% SWE-Atlas. A AA usa pesos iguais (1/3 cada) no índice dela; a composta fica de 0 a 1,2 ponto abaixo e a ordem quase não muda. Pontos por real = composta dividida pelo custo por tarefa em reais; a escala não é linear, use só para comparar. O índice de codificação por modelo vem do espelho llmbenchmark.ai (não é o índice de agentes e não se compara com ele). Fonte das notas por teste: dados da página oficial da Artificial Analysis. Filtro: só configurações de modelo único; o Devin Fusion (Opus 5.5 + GPT-6 Luna juntos) foi excluído. Das 34 configurações da AA, 11 estão aqui. O Copilot Fusion foi mantido porque não confirmei se usa um ou mais modelos.</p>
+
+<h2>Lacunas de dados</h2>
+<div class="cards">
+<div class="card gap"><h3>1. Plan, research e review sem benchmark</h3><p>Não há nota nem custo por tarefa para essas fases. Só o implement é decidível com dados; o resto é aproximação (índice por modelo e LMArena WebDev).</p></div>
+<div class="card gap"><h3>2. Preço oficial incompleto</h3><p>O custo por 1M de saída falta para vários modelos. Os que existem vieram de síntese de busca, sem conferir a página oficial de preços.</p></div>
+<div class="card gap"><h3>3. Custo por tarefa é do benchmark, não da fábrica</h3><p>As tarefas do FrontierCode e do Terminal-Bench podem ter tamanho diferente das features da fábrica, e a tabela da AA é ao vivo. Falta rodar uma amostra de tarefas reais da fábrica.</p></div>
+</div>
+</main>
+</body>
+</html>
