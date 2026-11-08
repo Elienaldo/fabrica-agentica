@@ -1,0 +1,19 @@
+{
+    "status":  "SUPERVISOR_COMPLETE_READBACK_VERIFIED",
+    "files":  [
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\modelos\\supervisor.md",
+                      "sha256_before":  "0EAF40DC07B24EC77D6F37996AE173888D839B0C8C489EC2103B97AE43B6A715",
+                      "sha256_after":  "A0A1E6CC1158FE2CB06E3413BC89EC808B5A34A48E14C2789F755B0BA96BD144",
+                      "clause_sha256":  "a10f1013d9e88a2aa91c18ca08a95f4082c6c5d2d8cb1ab9904d305ee0188bc3"
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\skills\\supervisor-regras.md",
+                      "sha256_before":  "8ACBCFC344A0E38D88C6068DBD09E58632BF12DD58E2CB7A31B4296EB50B4E2E",
+                      "sha256_after":  "BCDBB0C646C19737F48749203836300CB04EA2E720841B1A8ABA8B30D3CC0014",
+                      "clause_sha256":  "a10f1013d9e88a2aa91c18ca08a95f4082c6c5d2d8cb1ab9904d305ee0188bc3"
+                  }
+              ],
+    "dev_status":  "PENDING_UNTOUCHED",
+    "section26_preserved":  true
+}

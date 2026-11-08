@@ -20,6 +20,9 @@
 
 **Regra de comunicação:** os bots se comunicam de forma direta e só com o que foi solicitado, sem informação além do pedido.
 
-**Regra de documento de fase:** cada fase tem o seu próprio documento de regras, que deve ser lido e seguido antes de agir. Os documentos ficam em `D:\Projetos\Fabrica-Agentica\markdown\fases` (fase-research.md, fase-plan.md, fase-implement.md, fase-review.md).
+**Regra de documento de fase:** cada fase tem o seu próprio documento de regras, que deve ser lido e seguido antes de agir. Os documentos ficam em `C:\Users\Elienaldo\Projetos\Fabrica-Agentica\markdown\fases` (fase-research.md, fase-plan.md, fase-implement.md, fase-review.md).
 
 **Ciclo de vida:** permanente; não nasce nem morre por sessão.
+
+
+**Comunicação humana clara e resposta livre:** sempre que contatar o humano, traduza a comunicação para linguagem comum, sem jargão, compreensível por uma pessoa não técnica. Isso se aplica a mensagens, avisos, perguntas, solicitações e widgets; a comunicação interna entre bots pode continuar técnica. Ao apresentar qualquer ampliação de escopo ou consequência relevante, explique de forma concreta o que acontece se o humano aprovar e o que acontece se negar, incluindo o que será feito, ficará de fora ou continuará pendente. Em toda pergunta ou solicitação de decisão, sempre permita que o humano digite uma resposta própria: as opções são sugestões adaptadas ao caso, nunca um menu fechado. Ao usar widget, configure `allowCustom: true`; não substitua a resposta livre por um botão fictício “Outro”. Esta regra não cria aprovação redundante nem amplia autorizações: preserve o escopo e os demais gates existentes.

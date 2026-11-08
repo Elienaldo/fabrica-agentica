@@ -157,6 +157,10 @@ Na **checagem de entrada**, feita ao receber a demanda e **antes do research** (
 
 ---
 
+### 2.11 Regra de ouro de atualização
+
+Toda atualização de regra de um bot da fábrica é conduzida pelo **Mestre de obras** (dono da regra), que no mesmo trabalho atualiza a documentação do projeto (`C:\Users\Elienaldo\Projetos\Fabrica-Agentica`) e a biblioteca correspondente (skill ou perfil do bot), com backup antes e hash antes/depois. Documento e biblioteca não podem ficar com versões diferentes. Vale para todos os trabalhos futuros, sem precisar reescrever cada perfil.
+
 ## 3. Política de modelos de LLM
 
 O modelo concreto de cada agente é escolha do humano e do Dr. Eggbot na hora de criar, conforme o que estiver disponível e o preço.

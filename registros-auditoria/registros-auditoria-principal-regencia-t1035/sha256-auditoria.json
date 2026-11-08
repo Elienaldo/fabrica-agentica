@@ -1,0 +1,13 @@
+{
+    "timestamp_bahia":  "2026-11-08 02:03:25",
+    "path":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\modelos\\principal-product-engineer.md",
+    "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\principal-regencia-t1035\\principal-product-engineer-antes.md",
+    "document_sha256_before":  "EAEA3940BFFF27E81083F05CFE041E0DAEF914C6E33549ED5681839303AF4643",
+    "document_sha256_after":  "DE50754A386F3ACFDD59F339FEDAB5A74C3D530A307702AB45ECEB06B23EED6C",
+    "description_sha256_before":  "BE12D73DD407FCAAC185E4912FA114D82DDF6125DACDD424D27B60019B34DCB0",
+    "description_sha256_after":  "B2CE85889BEDE7E4CA0ECC0545463A36FFC1C992927C121118181EB3307759C8",
+    "profile_sha256_before":  "82A9B8047C54B62D4783D73421F30A67C284B51DBC4F096CFAAA02DA7F903C0C",
+    "profile_sha256_after":  "8A8429AD83FAD68B2BA45EA22C0EE78BAA24887E77B23CF2F0872436A77F8E3D",
+    "byte_equal":  true,
+    "other_profile_fields_unchanged":  true
+}

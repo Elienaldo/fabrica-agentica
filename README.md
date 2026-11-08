@@ -149,6 +149,7 @@ Se uma notificação de conclusão chegar e o ID do agente não casar com nenhum
 - **Criação de bots sempre pelo modelo:** cada bot nasce da ficha em `markdown/modelos/`. Sem ficha, o Dr. Eggbot não cria.
 - **Backup antes de alterar:** todo documento alterado ganha cópia `-anterior`; só valem os arquivos sem esse sufixo.
 - **Limites de rodadas, contados separadamente:** research 2, implement 3, the-judge 3 por execução, Cirurgião 3.
+- **Regra de ouro de atualização (dono: Mestre de obras):** toda atualização de regra de um bot é conduzida pelo Mestre de obras e exige, no mesmo trabalho, atualizar a documentação do projeto e a biblioteca correspondente (skill ou perfil), com backup e hash antes/depois; vale para todos os trabalhos futuros.
 
 ## 8. Como utilizar
 

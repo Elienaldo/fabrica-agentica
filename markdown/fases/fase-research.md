@@ -42,7 +42,7 @@ flowchart LR
 
 Decidido em 2026-11-05: toda fase nova (research, plan, implement e review) começa com o Supervisor solicitando ao Cursor que abra uma nova sessão, com contexto limpo, sem exceção. O research começa com o Supervisor abrindo a sessão nova no Cursor, a pedido do Principal. O handoff entre fases passa sempre pelo Supervisor, que dispara a sessão nova.
 
-Itens que eu propus e você não pediu: limite de 2 rodadas e o humano no desempate.
+Regra operacional de discussão: até duas rodadas; persistindo impasse de consenso, o Principal escala pelo Supervisor para decisão humana. Perguntas humanas obrigatórias de requisito e validação do protótipo são gates separados e permanecem aplicáveis.
 
 ## Correção decidida pelo Elienaldo em 2026-11-06: entrevista e protótipo bloqueiam o avanço
 
@@ -52,3 +52,17 @@ Itens que eu propus e você não pediu: limite de 2 rodadas e o humano no desemp
 - Ao receber o protótipo do research, o Supervisor o apresenta ao Elienaldo e NÃO inicia plan nem solicita o Orquestrador até um OK explícito dele. Consenso da equipe não substitui a validação humana do protótipo.
 - Critério de pronto da entrevista: perguntas e respostas humanas registradas; sem isso, o research está em espera, não concluído.
 
+
+## Grupo confirmado e início do brainstorm após a documentação
+
+Esta regra vale somente para a equipe de research, não para equipes de plan, implement, review ou de outros tipos. O Dr. Eggbot, a pedido do Supervisor e sob a permissão fixa de `../comunicacao.md`, cria ou confirma o grupo com exatamente Principal Product Engineer, Product Engineer, Design de front-end e Advogado do diabo; Supervisor e Cursor não são membros. Entrega ao Supervisor os quatro IDs, `group_id` e membros confirmados da mesma feature. Divergência bloqueia a entrega como completa; não se alteram membros de modo inseguro para esconder a pendência.
+
+O Supervisor verifica o grupo e, ao receber a documentação/inspeção correlacionada com os insumos prontos, instrui o Principal no mesmo turno a compartilhá-los e iniciar o brainstorm no canal, sem pedir nova aprovação humana. Isso depende de entrevista obrigatória resolvida: os bloqueios da seção anterior têm precedência. Se faltar pré-requisito, registre a pendência e continue quando resolvida; não declare debate iniciado nem síntese concluída. Não é uma nova rotina, webhook ou serviço.
+
+A conversa é direta entre os quatro no grupo, exceção explícita ao roteamento entre fases pelo Supervisor. O Principal conduz; não substitua discussão por respostas isoladas somente ao Supervisor. Uma abertura por pedido/versão de insumos, com continuações na mesma rodada/fase e sem duplicação ou laços.
+
+Antes da síntese, o Principal registra matriz de todas as objeções (inclusive as seis de Fornecedores): identificação/autor, respostas nominais, evidências/limites, avaliação do Advogado, decisão ou estado pendente/resolvida e motivo. Os três votantes registram posição e respostas; o Advogado confronta sem votar, decidir ou propor solução. Nenhuma objeção sem resposta registrada pode avançar; critérios de aceite futuros não são resultados já verificados.
+
+Principal, Product e Design têm o mesmo peso e devem declarar consenso. Até duas rodadas; persistindo impasse, o Principal envia opções e divergência ao Supervisor para decisão humana. Registre a decisão e ajuste os insumos, sem baixar automaticamente objeções restantes. Só o Supervisor fala com o humano/Cursor; o Principal não faz handoff direto ao Orquestrador nem escreve PRD/design doc. A síntese segue a execução/skill prevista para a fase.
+
+Escalada de impasse não proíbe esclarecer requisito humano obrigatório antes: perguntas exigidas por grill-me/tlc-discover ou que só o humano pode responder interrompem a rodada conforme a seção de entrevista. Resposta humana real registrada é necessária para retomar; OK explícito do protótipo continua necessário antes de PLAN.

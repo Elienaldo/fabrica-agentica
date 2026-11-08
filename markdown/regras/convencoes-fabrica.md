@@ -26,14 +26,14 @@ A notificação de conclusão do agente de nuvem não traz o campo tipo nem o sl
 
 ## Criação de bots: sempre pelo modelo
 
-Existe um modelo para cada bot da fábrica, em `D:\Projetos\Fabrica-Agentica\markdown\modelos\` (por exemplo `supervisor.md`, `dr-eggbot.md`, `principal-product-engineer.md`, `orquestrador-de-pipeline.md`, `cirurgiao.md`, `curador-amigavel.md`).
+Existe um modelo para cada bot da fábrica, em `C:\Users\Elienaldo\Projetos\Fabrica-Agentica\markdown\modelos\` (por exemplo `supervisor.md`, `dr-eggbot.md`, `principal-product-engineer.md`, `orquestrador-de-pipeline.md`, `cirurgiao.md`, `curador-amigavel.md`).
 
 **Regra (decidida pelo Elienaldo em 2026-11-03):** sempre que o Dr. Eggbot receber uma solicitação de criação de bot na fábrica, ele usa o modelo correspondente àquele bot e o aplica na criação: nome, job único, anti-jobs, voz, quando acorda e como concreto. Não cria um bot da fábrica de cabeça nem a partir de descrição solta no pedido.
 
 - Quem pede a criação indica o modelo pelo nome do arquivo.
 - Se não existir modelo para o bot pedido, o Dr. Eggbot não cria: devolve o pedido e avisa o Elienaldo.
 - Se o pedido contradisser o modelo, vale o modelo; a divergência vai ao Elienaldo antes de criar.
-- O Dr. Eggbot não alcança o disco D: da máquina do Elienaldo. Quem faz o pedido (Supervisor ou Mestre de obras) cola o texto do modelo na própria solicitação.
+- O Dr. Eggbot não acessa diretamente a pasta local da Fábrica (`C:\Users\Elienaldo\Projetos\Fabrica-Agentica`) na máquina do Elienaldo. Quem faz o pedido (Supervisor ou Mestre de obras) cola o texto do modelo na própria solicitação.
 - Só os arquivos sem sufixo `-anterior` valem; os com `-anterior` são backup.
 
 **Por quê:** mantém cada bot igual ao que foi desenhado e aprovado, e evita bots com dois jobs ou sem anti-jobs.
@@ -41,3 +41,7 @@ Existe um modelo para cada bot da fábrica, em `D:\Projetos\Fabrica-Agentica\mar
 ## Modelo padrão
 
 O modelo padrão da fábrica é o modelo atual (default) do Cursor, porque a fábrica usa o Cursor como background de desenvolvimento e planejamento. Nenhum modelo é nomeado como padrão: quando o Cursor passar a oferecer uma versão nova, o default dele vira automaticamente o padrão da fábrica. Se o humano solicitar um modelo específico no início do fluxo, ele segue em todas as fases até o final. A troca de modelo no meio do fluxo não é automática.
+
+## Regra de ouro de atualização
+
+**Regra de ouro de atualização (decisão do Elienaldo; dono: Mestre de obras):** toda atualização de regra de um bot da fábrica é conduzida pelo Mestre de obras, que no mesmo trabalho atualiza a documentação do projeto (`C:\Users\Elienaldo\Projetos\Fabrica-Agentica`) e a biblioteca correspondente (skill ou perfil do bot), com backup antes e hash antes/depois. Documento e biblioteca não podem ficar com versões diferentes. Vale para todos os trabalhos futuros, sem precisar reescrever cada perfil.

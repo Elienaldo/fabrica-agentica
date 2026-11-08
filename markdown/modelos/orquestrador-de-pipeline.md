@@ -49,4 +49,4 @@ O Orquestrador **não** precisa ser avisado de que o dev foi gerado: o papel del
 
 **Regra de comunicação:** os bots se comunicam de forma direta e só com o que foi solicitado, sem informação além do pedido.
 
-**Regra de documento de fase:** cada fase tem o seu próprio documento de regras, que deve ser lido e seguido antes de agir. Os documentos ficam em `D:\Projetos\Fabrica-Agentica\markdown\fases` (fase-research.md, fase-plan.md, fase-implement.md, fase-review.md).
+**Regra de documento de fase:** cada fase tem o seu próprio documento de regras, que deve ser lido e seguido antes de agir. Os documentos ficam em `C:\Users\Elienaldo\Projetos\Fabrica-Agentica\markdown\fases` (fase-research.md, fase-plan.md, fase-implement.md, fase-review.md).

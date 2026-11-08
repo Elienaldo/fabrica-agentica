@@ -1,0 +1,18 @@
+{
+    "status":  "COMPLETE_READBACK_VERIFIED",
+    "files":  [
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\modelos\\supervisor.md",
+                      "sha256_before":  "A0A1E6CC1158FE2CB06E3413BC89EC808B5A34A48E14C2789F755B0BA96BD144",
+                      "sha256_after":  "F623F9C87F39B060665A136909B546DB18B87532E36C67FC344D66B56CFB486C",
+                      "clause_sha256":  "1b7ea003d9ffbdd11dfd69bbbe4bbf96667c0a79c7973e9e89668202d5ebc2c9"
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\skills\\supervisor-regras.md",
+                      "sha256_before":  "BCDBB0C646C19737F48749203836300CB04EA2E720841B1A8ABA8B30D3CC0014",
+                      "sha256_after":  "6142911F29F77870CB81E829B42CCF842239FCF6072DD77748AAE2A268B2258E",
+                      "clause_sha256":  "1b7ea003d9ffbdd11dfd69bbbe4bbf96667c0a79c7973e9e89668202d5ebc2c9"
+                  }
+              ],
+    "skill_matches_runtime_bytes":  true
+}
