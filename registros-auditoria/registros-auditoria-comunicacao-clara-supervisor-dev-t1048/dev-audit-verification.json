@@ -1,8 +1,0 @@
-{
-    "status":  "DEV_COMPLETE_READBACK_VERIFIED",
-    "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\modelos\\dev-expresso.md",
-    "sha256_before":  "9E263EC2DC8758163F9B3518228303E7D3C8C4877EF8F5A8BEA470747A9FC87B",
-    "sha256_after":  "D5C094E3D8B4D634C7A9867DCED62325F1BCCA8973996FF9784ED03F24216868",
-    "clause_sha256":  "a10f1013d9e88a2aa91c18ca08a95f4082c6c5d2d8cb1ab9904d305ee0188bc3",
-    "previous_rules_preserved":  true
-}
