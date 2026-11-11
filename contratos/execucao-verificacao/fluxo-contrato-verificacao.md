@@ -40,4 +40,4 @@ Toda fase nova (research, plan, implement e review) começa com o Supervisor sol
 | 5. Implement | Orquestrador de pipeline + TLC Spec Lean | Build, testes e verificação internos da skill (Verifier e commits internos); máx. 3 rodadas; push cria o PR. | PR |
 | 6. Review | Orquestrador de pipeline + the-judge; Curador amigável; Cirurgião | the-judge classifica em blocker, should fix e nit (máx. 3 rodadas por execução); o Curador gera o HTML; o Cirurgião corrige should fix e nit (máx. 3 rodadas), blocker só com autorização. | findings, HTML |
 | 7. Merge | Orquestrador de pipeline | Dispara o merge no GitHub quando limpo e sem blocker pendente. | PR mergeado |
-| 8. Aviso | Supervisor | Avisa o humano no merge; após o ok, o Dr. Eggbot destrói a sessão. | aviso |
+| 8. Aviso | Supervisor | Avisa o humano no merge; destruição, se explicitamente autorizada para alvo/escopo e validada, é iniciada pelo Supervisor via script local, conforme a seção 24 de supervisor-regras. | aviso |

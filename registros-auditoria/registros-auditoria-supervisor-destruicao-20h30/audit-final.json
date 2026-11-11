@@ -1,0 +1,84 @@
+{
+    "status":  "SEVEN_DOCUMENTS_APPLIED_AND_VERIFIED",
+    "runtime_description_sha256":  "6d18581858e84c16559e1dd32bce62f14e3b910f63dd34ac5befb4f1a4c64839",
+    "runtime_skill_sha256":  "f35842486182bbc7e0b7162a4a0a739c5d95d9459fdbc64333f84d739199596b",
+    "runtime_description_byte_exact":  true,
+    "runtime_other_fields_unchanged":  true,
+    "runtime_skill_byte_exact":  true,
+    "frontmatter_original_preserved":  true,
+    "files":  [
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\README.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\README.md.before",
+                      "sha256_before":  "8a0cc486855b9501e1d80543a43d1aafa0ecdf207ff1f744b1b5f11c872c4dfd",
+                      "sha256_after":  "CFB19B06ECFC91FDCB39444B4E877F8A7642DF09712371727DB3C91DB3CA3DE7",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\README.md.candidate",
+                      "reason":  "Corrige quatro referências diretas ao executor e impede tratar OK de merge/finalização como autorização destrutiva.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\contratos\\contrato-webhook-destruicao.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\contratos__contrato-webhook-destruicao.md.before",
+                      "sha256_before":  "025b79e7cb5c077587cc3f78ab61895f6afcf48d9b7a287ceb74e63c4d9413b7",
+                      "sha256_after":  "A77BA43EE5E5CB6F0F8266F2FEC3C19980D90570926B58AC7FA654FC17C6B4A4",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\contratos__contrato-webhook-destruicao.md.candidate",
+                      "reason":  "Torna explícita a responsabilidade de iniciar o Python via Shell, mantendo comando, bloqueio e protocolo.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\contratos\\execucao-verificacao\\fluxo-contrato-verificacao.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\contratos__execucao-verificacao__fluxo-contrato-verificacao.md.before",
+                      "sha256_before":  "cff31bf702cfa35dde4641285f17e20bcb814d6f02fbaefc5bdd9084e7dd6861",
+                      "sha256_after":  "C1191CB20BF9D71373A396747AC40C92581A7A625C4EABB698B4474CCE544606",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\contratos__execucao-verificacao__fluxo-contrato-verificacao.md.candidate",
+                      "reason":  "Corrige dono na tabela de saída sem mudar as outras fases.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\comunicacao.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\markdown__comunicacao.md.before",
+                      "sha256_before":  "e5e3012f1047236391330ad91d698cd2e3c8497af47575fed1b149c80330f3e3",
+                      "sha256_after":  "DF43FB1A40E2FC6D947756ACB9A35031603737FC2A6D0D1B9118B511A2B071B7",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\markdown__comunicacao.md.candidate",
+                      "reason":  "Remove acionamento do Eggbot para iniciar destruição; preserva criação de grupos e roteamento.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\modelos\\supervisor.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\markdown__modelos__supervisor.md.before",
+                      "sha256_before":  "f623f9c87f39b060665a136909b546db18b87532e36c67fc344d66b56cfb486c",
+                      "sha256_after":  "6473C01987DB208571DF33EB7F5C91EF1597E9CEFAD7951FFBC17F4631226314",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\markdown__modelos__supervisor.md.candidate",
+                      "reason":  "Retira delegação ao Eggbot e explicita Supervisor iniciador local condicionado.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\skills\\supervisor-regras.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\skills__supervisor-regras.md.before",
+                      "sha256_before":  "6142911f29f77870cb81e829b42ccf842239fcf6072dd77748aae2a268b2258e",
+                      "sha256_after":  "F35842486182BBC7E0B7162A4A0A739C5D95D9459FDBC64333F84D739199596B",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\skills__supervisor-regras.md.candidate",
+                      "reason":  "Explicita dono em §24, sem mudar os sete itens de guardas nem qualquer outra seção.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\markdown\\modelos\\fábrica-agêntica.md",
+                      "backup":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\markdown__modelos__fábrica-agêntica.md.before",
+                      "sha256_before":  "cccc0d479fd595d0516eb67261a03770848706fc99eaa4c46b00d40ffbfd4a39",
+                      "sha256_after":  "294DA3C20B63309212ED0F256D9DFE3512C64538CDE905607D9D13C590096F63",
+                      "candidate":  "C:\\Users\\Elienaldo\\Projetos\\Fabrica-Agentica\\backup\\supervisor-destruicao-20h30\\markdown__modelos__fábrica-agêntica.md.candidate",
+                      "reason":  "Corrige referências transversais do executor no fluxo, diagrama, tabela e ciclo de vida.",
+                      "backup_verified":  true,
+                      "readback_verified":  true
+                  }
+              ],
+    "other_bots_untouched":  true,
+    "operational_scripts_or_tests_executed":  false,
+    "pending":  "Modelo dr-eggbot.md contraditorio preservado por restricao de nao tocar outros bots."
+}

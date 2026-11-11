@@ -10,7 +10,7 @@ Legenda: itens marcados com **[proposta]** são sugestões minhas que o humano n
 
 ## 1. Visão geral da fábrica agêntica
 
-A fábrica recebe uma demanda e entrega código mergeado. Cada feature roda dentro de uma **sessão nomeada**, com a sua squad, criada e destruída pelo Dr. Eggbot.
+A fábrica recebe uma demanda e entrega código mergeado. Cada feature roda dentro de uma **sessão nomeada**, com a sua squad criada pelo Dr. Eggbot. A destruição da seção é iniciada pelo Supervisor via script local, somente nas condições da seção 24 de supervisor-regras.
 
 ### Fluxo, em fases
 
@@ -68,15 +68,15 @@ flowchart LR
   CU -. HTML para decisão informada .-> SU
   SU -. avisa no merge e repassa escaladas .-> EL((Humano))
   EL -. decisão e ok final .-> SU
-  SU -- após o ok do humano --> DE[Dr. Eggbot destrói a sessão]
+  SU -- autorização explícita de alvo/escopo e capacidades validadas --> DE[Supervisor inicia script local de destruição da seção]
 ```
 
 ### Quem é quem
 
 | Agente | Papel | Ficha |
 | --- | --- | --- |
-| Supervisor | Recebe a demanda, pergunta o projeto só se ela não trouxer, cria a sessão `feat/` ou `fix/`, pede ao Dr. Eggbot o Principal Product Engineer e coordena do pedido ao merge; transversal e permanente; único canal de comunicação com o humano: recebe as mensagens dos bots e repassa ao humano quando necessário; avisa o humano no merge pelo app do Grok Bot e, depois do ok final, pede ao Dr. Eggbot a destruição da sessão; recebe do Principal os insumos (design doc, PRD ou solicitação direta), repassa ao Orquestrador determinando se é plan ou implement e faz ao Cursor o pedido que o Orquestrador devolve a ele; toda comunicação entre atores passa por ele. Toda fase nova começa com ele solicitando ao Cursor uma sessão nova, com contexto limpo, e o handoff entre fases passa sempre por ele (seção 2.2). | `supervisor.md` |
-| Dr. Eggbot | Cria e destrói os bots e os chats da sessão. | `dr-eggbot.md` |
+| Supervisor | Recebe a demanda, pergunta o projeto só se ela não trouxer, cria a sessão `feat/` ou `fix/`, pede ao Dr. Eggbot o Principal Product Engineer e coordena do pedido ao merge; transversal e permanente; único canal de comunicação com o humano: recebe as mensagens dos bots e repassa ao humano quando necessário; avisa o humano no merge pelo app do Grok Bot e só inicia o script local de destruição com autorização humana explícita de alvo/escopo e capacidades validadas, conforme a seção 24 de supervisor-regras; recebe do Principal os insumos (design doc, PRD ou solicitação direta), repassa ao Orquestrador determinando se é plan ou implement e faz ao Cursor o pedido que o Orquestrador devolve a ele; toda comunicação entre atores passa por ele. Toda fase nova começa com ele solicitando ao Cursor uma sessão nova, com contexto limpo, e o handoff entre fases passa sempre por ele (seção 2.2). | `supervisor.md` |
+| Dr. Eggbot | Cria os bots e os grupos da feature; não inicia a destruição, que cabe ao Supervisor conforme a seção 24 de supervisor-regras. | `dr-eggbot.md` |
 | Principal Product Engineer | Entrada da feature na squad, guardião do escopo e engenheiro mais experiente; é acordado pelo Supervisor e sempre existe na sessão; faz a checagem de entrada, antes do research: respeita a tag de nível escrita pelo humano e, sem tag, classifica a feature com 5 perguntas e contagem de SIM (simples vai direto ao plan; média e alta vão ao research) e roteia as skills opcionais conforme a complexidade (seção 2.10); audita as skills do fluxo e instala as que faltarem; decide o uso opcional do grill-me e do wayfinder e, se não conseguir, aciona o humano; no research tem o mesmo peso de voto do Product Engineer e, junto com ele, decide o como técnico; entrega ao Supervisor (nunca direto ao Orquestrador) o design doc, o PRD ou a solicitação direta, e o Supervisor repassa ao Orquestrador. | `principal-product-engineer.md` |
 | Product Engineer | Segundo engenheiro de produto, com o mesmo peso de voto do Principal Product Engineer; junto com ele, decide o como técnico no research. | `product-engineer.md` |
 | Design de front-end | Especialista em front-end: decide a experiência (UX e UI), cria o protótipo descartável quando há dúvida visual ou de interação e fecha o consenso da área de design. | `design-front-end.md` |
@@ -230,10 +230,10 @@ Skills não são agentes: são instruções que um agente carrega. Não há cria
 | Execução | Orquestrador de pipeline e squad | O orquestrador atua só dentro das fases plan, implement e review: pede ao Supervisor que solicite ao Cursor a abertura das sessões e dispare as skills (só o Supervisor dispara o Cursor). O Supervisor continua transversal e permanente. |
 | Merge | Orquestrador de pipeline | Dispara o merge no GitHub quando a última rodada da the-judge vem limpa e não há blocker pendente. |
 | Aviso | Supervisor | Avisa o humano no merge. |
-| Destruição | Dr. Eggbot, a pedido do Supervisor | Depois do ok do humano sobre a finalização, destrói os bots e os chats exclusivos da sessão. Supervisor e Dr. Eggbot continuam. |
-| Cancelamento | Supervisor, a pedido do humano **[proposta]** | Dr. Eggbot destrói a sessão sem merge. |
+| Destruição | Supervisor, por script Python local via Shell no PC registrado | Exige autorização humana explícita para alvo/escopo e capacidades validadas, conforme a seção 24 de supervisor-regras. Finalização não autoriza por si só; bots permanentes permanecem protegidos. |
+| Cancelamento | Supervisor, a pedido do humano **[proposta]** | Cancelar não autoriza destruir por si só; eventual destruição segue a seção 24 de supervisor-regras, iniciada pelo Supervisor via script local somente com autorização explícita de alvo/escopo e capacidades validadas. |
 
 Decisões do Dr. Eggbot:
 
 - **Criação dos agentes de research:** o Dr. Eggbot cria os agentes de research somente quando o Principal Product Engineer classificar a feature como SIM. Se a feature pega o atalho, eles não são criados.
-- **Destruição:** o Dr. Eggbot destrói a sessão quando decidido, depois do ok do humano sobre a finalização, recebido pelo Supervisor.
+- **Destruição:** o Supervisor inicia o script Python local via Shell no PC registrado, somente com autorização humana explícita para alvo/escopo e capacidades validadas, conforme a seção 24 de supervisor-regras. Não delega o início ao Dr. Eggbot. Finalização da feature ou produção não autoriza destruir por si só.

@@ -2,7 +2,7 @@
 
 ## Responsável, chamada e limites
 
-Supervisor executa somente com autorização explícita para excluir os bots/seção da feature e após capacidades reais validadas:
+O Supervisor é o responsável por iniciar o script Python local de destruição da seção da feature, por Shell sancionado no PC registrado, conforme a seção 24 de supervisor-regras e o contrato de destruição. Não pede ao Dr. Eggbot que inicie a destruição. Exige autorização humana explícita para o alvo e o alcance da exclusão e capacidades reais validadas; fim da feature, merge, produção ou aprovação de finalização, por si só, não autorizam destruir. Enquanto validated=false ou faltar validação, não inicia a destruição real: informa o bloqueio ao humano, sem alterar flags, guardas ou evidências para liberar a operação. A chamada local condicionada é:
 
 ```powershell
 py -3 "C:\Users\Elienaldo\GrokBot-Scripts\destruir-secao-feature.py" "cadastro-fornecedor" --confirmar-exclusao "cadastro-fornecedor" --config "C:\Users\Elienaldo\GrokBot-Scripts\destruir-secao-config.json"

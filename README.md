@@ -26,7 +26,7 @@ Fábrica de desenvolvimento de software feita de bots: recebe uma demanda e entr
 
 ## 1. O que é
 
-Um conjunto de bots do Grok Bot que trabalham em equipe com agentes de nuvem do Cursor. Os bots coordenam, decidem e controlam o fluxo. Quem escreve o código é o agente do Cursor, que roda numa VM própria, em branch própria. Cada feature roda numa **sessão nomeada**, com a sua squad, criada e destruída pelo Dr. Eggbot.
+Um conjunto de bots do Grok Bot que trabalham em equipe com agentes de nuvem do Cursor. Os bots coordenam, decidem e controlam o fluxo. Quem escreve o código é o agente do Cursor, que roda numa VM própria, em branch própria. Cada feature roda numa **sessão nomeada**, com a sua squad criada pelo Dr. Eggbot. A destruição da seção é iniciada pelo Supervisor via script local, somente nas condições da seção 24 de supervisor-regras.
 
 ## 2. Objetivo
 
@@ -52,7 +52,7 @@ Um conjunto de bots do Grok Bot que trabalham em equipe com agentes de nuvem do 
 
 | Bot | Função |
 | --- | --- |
-| **Dr. Eggbot** | Cria e destrói sessões, agentes e grupos de chat de cada feature. |
+| **Dr. Eggbot** | Cria a equipe e os grupos da feature; não inicia a destruição, que cabe ao Supervisor conforme a seção 24 de supervisor-regras. |
 | **Principal Product Engineer** | Guardião do escopo: classifica a demanda com 3 perguntas, roteia as skills e orquestra o research. |
 | **Product Engineer** | No research, traz a visão técnica e de produto, com o mesmo peso de voto do Principal. |
 | **Design de front-end** | Desenha a experiência do front no research. |
@@ -89,7 +89,7 @@ flowchart LR
 | 5. Implement | Orquestrador, Cursor com TLC Spec Lean | Build, testes e verificação dentro da skill. Teste vermelho é parada, e a asserção nunca é enfraquecida. No máximo 3 rodadas de correção; depois, escala ao humano. | PR |
 | 6. Review | Orquestrador, Cursor com the-judge, Curador, Cirurgião | A the-judge classifica em blocker, should fix e nit (máx. 3 rodadas por execução). O Cirurgião corrige should fix e nit (máx. 3 rodadas). Blocker e should fix complexo vão ao humano. | findings, HTML |
 | 7. Merge | Orquestrador | Merge no GitHub quando a última rodada da the-judge vem limpa e sem blocker pendente (nit pode ficar). | PR mergeado |
-| 8. Aviso | Supervisor | Avisa o humano; depois do ok, o Dr. Eggbot destrói a sessão. | aviso |
+| 8. Aviso | Supervisor | Avisa o humano; a destruição só pode ser iniciada pelo Supervisor via script local com autorização explícita de alvo/escopo e capacidades validadas, conforme a seção 24 de supervisor-regras. | aviso |
 
 **Sessão nova em toda fase:** Toda fase nova (research, plan, implement e review) começa com o Supervisor solicitando ao Cursor que abra uma nova sessão, com contexto limpo, sem exceção. O handoff entre fases passa sempre pelo Supervisor, que dispara a sessão nova.
 
@@ -164,7 +164,7 @@ Se uma notificação de conclusão chegar e o ID do agente não casar com nenhum
 1. Entregue a demanda ao Supervisor (ticket, texto ou outra fonte). Informe o projeto, se ele perguntar.
 2. Opcional: diga o nível na solicitação ("aceite como média") e o modelo desejado.
 3. Acompanhe pelo Supervisor, que é o único que fala com você. Decida quando ele escalar (impasse, blocker, risco).
-4. No merge, receba o aviso e dê o ok para o Dr. Eggbot destruir a sessão.
+4. No merge, receba o aviso. Se quiser destruir a seção, autorize explicitamente o alvo e o alcance da exclusão ao Supervisor; ele só inicia o script local com as capacidades validadas, conforme a seção 24 de supervisor-regras. O merge não autoriza destruição por si só.
 
 **Quando algo não casar:** vale a seção 6. Procure o pedido pela branch ou pelo repositório.
 

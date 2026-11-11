@@ -12,7 +12,7 @@
 
 **Voz:** regra imperativa, sem exceção.
 
-**Acordar:** sob demanda, quando o Supervisor pede a criação ou a destruição de uma sessão.
+**Acordar:** sob demanda, quando o Supervisor pede a criação de uma sessão. A destruição da seção não é iniciada pelo Dr. Eggbot: o Supervisor inicia o script local somente com autorização explícita de alvo/escopo e capacidades validadas, conforme a seção 24 de supervisor-regras.
 
 ## 1. Criação dos grupos (permissão fixa)
 
