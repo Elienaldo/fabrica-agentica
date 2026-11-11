@@ -7,7 +7,7 @@ Fábrica de desenvolvimento de software feita de bots: recebe uma demanda e entr
 **Caminho do projeto:** `C:\Users\Elienaldo\Projetos\Fabrica-Agentica`  
 **Scripts operacionais (fora deste repositório):** `C:\Users\Elienaldo\GrokBot-Scripts`
 
-> **Estado atual:** o caminho rápido (Dev Expresso, Supervisor, Cursor e volta) foi validado de ponta a ponta no teste real `req-20261103-001`. O fluxo padrão (research, plan, implement, review) está desenhado e documentado. O script local de **criação** de seção existe e é o procedimento operacional do Supervisor. O script local de **destruição** permanece bloqueado (`validated=false` em `destruir-secao-config.json`). O teste real de 08/11/2026 (America/Bahia) passou no inventário do Cirurgião da seção `Teste` e parou na identificação do menu contextual; nada foi excluído. Candidatos de correção ficaram só em staging; a configuração de produção não foi liberada.
+> **Estado atual:** o caminho rápido (Dev Expresso, Supervisor, Cursor e volta) foi validado de ponta a ponta no teste real `req-20261103-001`. O fluxo padrão (research, plan, implement, review) também foi testado de ponta a ponta no projeto Adega, com a feature `fix-fornecedores-layout-prototipo`: PRD, plano congelado com checks, implementação com 83 checks verificados, review e merge do [PR #5](https://github.com/Elienaldo/Adega/pull/5) em 08/11/2026, 19:13 (America/Bahia). O script local de **criação** de seção existe e é o procedimento operacional do Supervisor. O script local de **destruição** permanece bloqueado (`validated=false` em `destruir-secao-config.json`). O teste real de 08/11/2026 (America/Bahia) passou no inventário do Cirurgião da seção `Teste` e parou na identificação do menu contextual; nada foi excluído. Candidatos de correção ficaram só em staging; a configuração de produção não foi liberada.
 
 ---
 
@@ -253,7 +253,6 @@ Os scripts `criar-secao-feature.py` e `destruir-secao-feature.py`, a configuraç
 ## 12. Pendências e pontos em aberto
 
 - Script de destruição bloqueado (`validated=false`). O teste real de 08/11/2026 parou no menu contextual; nada foi excluído; candidatos de correção continuam só em staging. Flags não devem ser liberadas sem testes autorizados.
-- Testes reais do fluxo padrão com o projeto Adega foram previstos a partir de 2026-11-05; este repositório não registra conclusão ponta a ponta desse fluxo.
 - Checagem diária de órfãos (recomendada, não implementada).
 - Confirmar no teste real como o push cria o PR (configuração do Cursor ou do GitHub) e se a notificação traz o link do PR (cadeia da implement à review, `comunicacao-bidirecional-cursor.md`, seção 8).
 - Pontos em aberto de `comunicacao.md`: confirmar o prefixo `feat`, o dono da linha de veredito no ADR, e a abertura/fechamento dos grupos além do research.
