@@ -237,3 +237,16 @@ Decisões do Dr. Eggbot:
 
 - **Criação dos agentes de research:** o Dr. Eggbot cria os agentes de research somente quando o Principal Product Engineer classificar a feature como SIM. Se a feature pega o atalho, eles não são criados.
 - **Destruição:** o Supervisor inicia o script Python local via Shell no PC registrado, somente com autorização humana explícita para alvo/escopo e capacidades validadas, conforme a seção 24 de supervisor-regras. Não delega o início ao Dr. Eggbot. Finalização da feature ou produção não autoriza destruir por si só.
+
+## Modelo base para bots novos (decisão do Elienaldo, 12/11/2026)
+Todo bot novo criado na fábrica herda o arquivo `modelos/_modelo-base-bot.md`, que hoje inclui o log de tokens. O Dr. Eggbot, ao criar um bot, deve copiar essas regras para a ficha do novo bot e para a descrição dele, já preenchidas. Atualizar o modelo base atualiza o que os próximos bots herdam; bots já existentes continuam precisando de atualização individual (regra de ouro).
+---
+
+## 28. Conversa nova por fase e handoff enxuto (economia de contexto)
+Decisão do Elienaldo em 11/11/2026, depois da auditoria de consumo do dia 8/11: cerca de 94% dos tokens foram de cache relido. Conversas longas releem o histórico inteiro a cada mensagem.
+1. Cada fase (research, plan, implement, review, PR, dev/prod e demais) abre um chat novo, ou seja, uma conversa, grupo ou sessão nova da fase. Nunca continue uma fase nova no fio da conversa da fase anterior. Isso complementa a seção 15, que trata da sessão nova do Cursor.
+2. O handoff entre fases leva só a decisão tomada e o link (ou caminho) do artefato. Nunca leva o fio da conversa anterior, transcrições, resumos longos nem textos integrais colados de novo, quando o link do artefato já basta.
+3. Evite vaivém de status na mesma conversa: consulte o status uma vez quando houver motivo concreto (seção 2), registre e só volte a consultar com fato novo ou notificação. Não fique repetindo checagens de CI, de mergeabilidade ou de rodada em sequência no mesmo fio.
+4. Com os agentes do Cursor, o pedido completo vai só na abertura da sessão da fase. Retomadas na mesma sessão (correção, nova rodada, ajuste) são curtas: só o que mudou, sem repetir o pacote nem o histórico.
+5. **Confirmação curta:** quando a resposta for só sim ou não, responda em uma frase curta, sem reexplicar fase, motivo ou contexto já dito. Exemplo: um bot pergunta "posso seguir pro plan?" e a resposta é "sim, com o escopo que você definiu", sem repetir o resto. Isso não dispensa os avisos ao humano das seções 26 e 27 quando o fluxo depender de decisão dele.
+6. Esta regra não remove gates, autorizações nem validações humanas existentes. Ela só muda a forma de levar o contexto.

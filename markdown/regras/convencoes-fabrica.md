@@ -40,8 +40,12 @@ Existe um modelo para cada bot da fábrica, em `C:\Users\Elienaldo\Projetos\Fabr
 
 ## Modelo padrão
 
-O modelo padrão da fábrica é o modelo atual (default) do Cursor, porque a fábrica usa o Cursor como background de desenvolvimento e planejamento. Nenhum modelo é nomeado como padrão: quando o Cursor passar a oferecer uma versão nova, o default dele vira automaticamente o padrão da fábrica. Se o humano solicitar um modelo específico no início do fluxo, ele segue em todas as fases até o final. A troca de modelo no meio do fluxo não é automática.
+O modelo padrão da fábrica é o grok-4.7 com reasoning_effort high, fast false e context 500k (ver seção 30 de supervisor-regras): toda solicitação ao Cursor sem modelo explícito usa esse padrão. Se o humano solicitar um modelo específico no início do fluxo, ele segue em todas as fases até o final. A troca de modelo no meio do fluxo não é automática. Se o grok-4.7 estiver com créditos esgotados, usa outro modelo disponível, nunca o esgotado.
 
 ## Regra de ouro de atualização
 
 **Regra de ouro de atualização (decisão do Elienaldo; dono: Mestre de obras):** toda atualização de regra de um bot da fábrica é conduzida pelo Mestre de obras, que no mesmo trabalho atualiza a documentação do projeto (`C:\Users\Elienaldo\Projetos\Fabrica-Agentica`) e a biblioteca correspondente (skill ou perfil do bot), com backup antes e hash antes/depois. Documento e biblioteca não podem ficar com versões diferentes. Vale para todos os trabalhos futuros, sem precisar reescrever cada perfil.
+
+## Economia de contexto (regra 28) vale para todos os bots
+
+Decisao do Elienaldo (12/11/2026): a regra 28 (conversa nova por fase, handoff enxuto, economia de contexto) aplica-se a TODOS os bots da fabrica, sem excecao, inclusive Dr. Eggbot. Cada bot carrega o bloco da regra 28 na sua fonte real (skill ou descricao) e na sua documentacao de modelo, em versoes iguais. O texto canonico da regra 28 esta em supervisor-regras secao 28 e em _modelo-base-bot.md.
