@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cruzamento de autoconsumo — 8/11 vs 13/11 (calendário Bahia)</title>
+<style>
+  :root {
+    --bg: #0b1016;
+    --bg-card: #141b24;
+    --bg-soft: #1a2330;
+    --line: #2a3544;
+    --text: #e8eef6;
+    --muted: #9aa8b8;
+    --cache: #3b82c4;
+    --fresh: #d4a017;
+    --write: #6b7c8f;
+    --out: #c47b9a;
+    --peak: #e07a2f;
+    --event: #e35d6a;
+    --ok: #7dcea0;
+    --now: #5ba3c4;
+    --ref: #8a7a62;
+    --after: #c4a16a;
+    --warn: #e0b05a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 "Segoe UI", system-ui, sans-serif;
+  }
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+  h1 {
+    font-size: 1.7rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    margin: 0 0 12px;
+  }
+  p { margin: 0 0 12px; }
+  .lead, .meta, .nota, figcaption, th, .muted { color: var(--muted); }
+  .meta { font-size: 0.92rem; margin-bottom: 24px; }
+  section {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 22px 18px;
+    margin: 0 0 20px;
+  }
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 0 0 20px;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+  .kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .kpi .v {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .l { font-size: 0.82rem; color: var(--muted); }
+  .conclusao {
+    border-color: #3a4a2e;
+    background: #142016;
+  }
+  .conclusao h2 { color: var(--ok); }
+  .aviso {
+    border-color: #5a4630;
+    background: #1c1812;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin: 0 0 12px;
+    color: var(--warn);
+    font-size: 0.95rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  th, td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.total td { font-weight: 650; border-bottom: none; }
+  td.up { color: var(--event); }
+  td.down { color: var(--ok); }
+  td.flat { color: var(--muted); }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 20px;
+    margin: 8px 0 14px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .sw-cache { background: var(--cache); }
+  .sw-fresh { background: var(--fresh); }
+  .sw-write { background: var(--write); }
+  .sw-out { background: var(--out); }
+  .sw-now { background: var(--now); }
+  .sw-ref { background: var(--ref); }
+  .sw-after { background: var(--after); }
+  svg .grid { stroke: #243040; stroke-width: 1; }
+  svg .axis { stroke: #4a5a6c; stroke-width: 1; }
+  svg .tick, svg .xlab, svg .ylab, svg .barlab, svg .axis-title {
+    fill: var(--muted);
+    font-size: 11px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+  svg .ylab, svg .barlab { fill: var(--text); font-size: 11px; }
+  svg .axis-title { font-size: 11px; }
+  .wrap { overflow-x: auto; }
+  footer { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+  code { font-family: Consolas, "Segoe UI Mono", monospace; font-size: 0.9em; }
+  ul.notas { margin: 0; padding-left: 1.2em; color: var(--muted); }
+  ul.notas li { margin-bottom: 6px; }
+  @media (max-width: 800px) {
+    .kpis { grid-template-columns: 1fr 1fr; }
+    main { padding: 20px 14px 48px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Cruzamento de autoconsumo — 8 vs 13 de novembro de 2026</h1>
+    <p class="meta">
+      Calendário America/Bahia (UTC-3). Horários do CSV (UTC, sufixo Z) convertidos para este fuso.
+      O dia 8 entra inteiro no que o arquivo cobre: 00h00:01 às 20h42:15 (não há eventos depois das 20h42 neste recorte).
+      O dia 13 está <strong>parcial</strong>: 00h00:05 às 19h43:59, fim do arquivo — não há dado da noite.
+      Referência justa: o dia 8 recortado até o mesmo relógio (19h43:59).
+      Total = prompt + cache lido + cache escrito + saída.
+      Sem cache = prompt + saída.
+      Nenhum número foi inventado: tudo foi somado linha a linha nos CSVs.
+    </p>
+  </header>
+
+  <section class="conclusao" id="conclusao">
+    <h2>Conclusão</h2>
+    <p class="aviso">
+      O dia 13 está parcial. A exportação termina às 19h43:59 America/Bahia; o que aconteceu depois disso neste dia não entra nesta conta.
+    </p>
+    <p>
+      No calendário Bahia, o autoconsumo do dia 13 disponível <strong>reduziu</strong> frente ao dia 8.
+      Até 19h43:59, o dia 13 somou 164.039.588 tokens em 1.462 eventos,
+      contra 356.457.528 tokens em 2.917 eventos no dia 8
+      (00h00:01 às 20h42:15) — baixa de −54,0%.
+    </p>
+    <p>
+      Na referência mais justa, o dia 8 recortado até 19h43:59 soma 328.401.606 tokens
+      em 2.684 eventos. O trecho que sobra no dia 8, das 19h44:46 às 20h42:15,
+      tem 233 eventos e 28.055.922 tokens. Frente a esse recorte justo,
+      o dia 13 continua bem abaixo: −50,0%.
+    </p>
+    <p>
+      O peso do cache relido ficou próximo:
+      92,7% no dia 13 (152.021.181 tokens)
+      e 93,9% no dia 8 (334.844.519 tokens),
+      diferença de −1,3 p.p..
+      A queda aparece nos dois produtos
+      (<code>grok-bot</code> −53,4%,
+      <code>cursor</code> −55,0%
+      contra o dia 8 completo) e vem sobretudo da manhã:
+      até as 14h o dia 8 já tinha 251.658.269 tokens,
+      e o dia 13 só 22.365.559.
+      Na tarde isolada (14h–19h43), o dia 13 foi maior
+      (141.674.029 contra 76.743.337);
+      isso está no painel das 14h e não contradiz este cruzamento do dia inteiro.
+    </p>
+  </section>
+
+  <section class="kpis" aria-label="Indicadores do cruzamento">
+    <div class="kpi"><span class="l">13/11 parcial (até 19h43)</span><span class="v">164.039.588</span></div>
+    <div class="kpi"><span class="l">8/11 inteiro (até 20h42)</span><span class="v">356.457.528</span></div>
+    <div class="kpi"><span class="l">8/11 até 19h43:59 (justo)</span><span class="v">328.401.606</span></div>
+    <div class="kpi"><span class="l">Variação vs recorte justo</span><span class="v" style="color:var(--ok)">−50,0%</span></div>
+  </section>
+
+  <section class="kpis" aria-label="Cache, eventos e picos">
+    <div class="kpi"><span class="l">Cache lido 13/11 (parcial)</span><span class="v">92,7%</span></div>
+    <div class="kpi"><span class="l">Cache lido 8/11 (inteiro)</span><span class="v">93,9%</span></div>
+    <div class="kpi"><span class="l">Eventos 13 vs 8 vs justo</span><span class="v">1.462 / 2.917 / 2.684</span></div>
+    <div class="kpi"><span class="l">Picos horários 13 / 8</span><span class="v">17h–18h / 02h–03h</span></div>
+  </section>
+
+  <section id="totais">
+    <h2>Totais por produto</h2>
+    <p class="nota">
+      Dia 13 (parcial): 00h00:05 às 19h43:59.
+      Dia 8 inteiro: 00h00:01 às 20h42:15.
+      Dia 8 até 19h43:59: último evento às 19h43:15.
+    </p>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th class="num">Evt. 13 (parcial)</th>
+            <th class="num">Tokens 13 (parcial)</th>
+            <th class="num">Cache % 13</th>
+            <th class="num">Evt. 8 inteiro</th>
+            <th class="num">Tokens 8 inteiro</th>
+            <th class="num">Cache % 8</th>
+            <th class="num">Var. vs 8 inteiro</th>
+            <th class="num">Evt. 8 até 19h43</th>
+            <th class="num">Tokens 8 até 19h43</th>
+            <th class="num">Var. vs recorte justo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+      <td>grok-bot</td>
+      <td class="num">1.078</td>
+      <td class="num">107.781.960</td>
+      <td class="num">92,5%</td>
+      <td class="num">2.228</td>
+      <td class="num">231.473.660</td>
+      <td class="num">94,0%</td>
+      <td class="num down">−53,4%</td>
+      <td class="num">2.009</td>
+      <td class="num">204.960.286</td>
+      <td class="num down">−47,4%</td>
+    </tr><tr>
+      <td>cursor</td>
+      <td class="num">384</td>
+      <td class="num">56.257.628</td>
+      <td class="num">92,9%</td>
+      <td class="num">689</td>
+      <td class="num">124.983.868</td>
+      <td class="num">93,8%</td>
+      <td class="num down">−55,0%</td>
+      <td class="num">675</td>
+      <td class="num">123.441.320</td>
+      <td class="num down">−54,4%</td>
+    </tr><tr class="total">
+      <td>Total</td>
+      <td class="num">1.462</td>
+      <td class="num">164.039.588</td>
+      <td class="num">92,7%</td>
+      <td class="num">2.917</td>
+      <td class="num">356.457.528</td>
+      <td class="num">93,9%</td>
+      <td class="num down">−54,0%</td>
+      <td class="num">2.684</td>
+      <td class="num">328.401.606</td>
+      <td class="num down">−50,0%</td>
+    </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tipos">
+    <h2>Breakdown por tipo de uso</h2>
+    <ul class="legend">
+      <li><i class="sw-cache"></i>Cache lido</li>
+      <li><i class="sw-write"></i>Cache escrito</li>
+      <li><i class="sw-fresh"></i>Prompt (não cacheado)</li>
+      <li><i class="sw-out"></i>Saída (completion)</li>
+    </ul>
+    <h2 style="font-size:1rem;margin-top:4px">Dia 13 (parcial, até 19h43:59)</h2>
+    <div class="wrap">
+      <svg viewBox="0 0 920 168" width="100%" role="img" aria-label="Composição dos tokens do dia 13 disponível, por tipo de uso.">
+<text x="190" y="31.0" class="ylab" text-anchor="end">Cache lido</text>
+<rect x="200" y="16.5" width="556.0" height="20.9" rx="3" fill="var(--cache)"><title>Cache lido: 152.021.181 (92,7%)</title></rect>
+<text x="764.0" y="31.0" class="barlab">152.021.181 · 92,7%</text>
+<text x="190" y="69.0" class="ylab" text-anchor="end">Cache escrito</text>
+<rect x="200" y="54.5" width="21.9" height="20.9" rx="3" fill="var(--write)"><title>Cache escrito: 5.979.826 (3,6%)</title></rect>
+<text x="229.9" y="69.0" class="barlab">5.979.826 · 3,6%</text>
+<text x="190" y="107.0" class="ylab" text-anchor="end">Prompt (não cacheado)</text>
+<rect x="200" y="92.5" width="16.4" height="20.9" rx="3" fill="var(--fresh)"><title>Prompt (não cacheado): 4.489.857 (2,7%)</title></rect>
+<text x="224.4" y="107.0" class="barlab">4.489.857 · 2,7%</text>
+<text x="190" y="145.0" class="ylab" text-anchor="end">Saída (completion)</text>
+<rect x="200" y="130.6" width="5.7" height="20.9" rx="3" fill="var(--out)"><title>Saída (completion): 1.548.724 (0,9%)</title></rect>
+<text x="213.7" y="145.0" class="barlab">1.548.724 · 0,9%</text>
+</svg>
+    </div>
+    <h2 style="font-size:1rem;margin-top:18px">Dia 8 inteiro (até 20h42:15)</h2>
+    <div class="wrap">
+      <svg viewBox="0 0 920 168" width="100%" role="img" aria-label="Composição dos tokens do dia 8 completo no arquivo, por tipo de uso.">
+<text x="190" y="31.0" class="ylab" text-anchor="end">Cache lido</text>
+<rect x="200" y="16.5" width="563.6" height="20.9" rx="3" fill="var(--cache)"><title>Cache lido: 334.844.519 (93,9%)</title></rect>
+<text x="771.6" y="31.0" class="barlab">334.844.519 · 93,9%</text>
+<text x="190" y="69.0" class="ylab" text-anchor="end">Cache escrito</text>
+<rect x="200" y="54.5" width="20.6" height="20.9" rx="3" fill="var(--write)"><title>Cache escrito: 12.217.112 (3,4%)</title></rect>
+<text x="228.6" y="69.0" class="barlab">12.217.112 · 3,4%</text>
+<text x="190" y="107.0" class="ylab" text-anchor="end">Prompt (não cacheado)</text>
+<rect x="200" y="92.5" width="12.8" height="20.9" rx="3" fill="var(--fresh)"><title>Prompt (não cacheado): 7.587.733 (2,1%)</title></rect>
+<text x="220.8" y="107.0" class="barlab">7.587.733 · 2,1%</text>
+<text x="190" y="145.0" class="ylab" text-anchor="end">Saída (completion)</text>
+<rect x="200" y="130.6" width="3.0" height="20.9" rx="3" fill="var(--out)"><title>Saída (completion): 1.808.164 (0,5%)</title></rect>
+<text x="211.0" y="145.0" class="barlab">1.808.164 · 0,5%</text>
+</svg>
+    </div>
+    <div class="wrap" style="margin-top:16px">
+      <table>
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th class="num">13/11 parcial</th>
+            <th class="num">8/11 inteiro</th>
+            <th class="num">Var. vs 8 inteiro</th>
+            <th class="num">8/11 até 19h43:59</th>
+            <th class="num">Var. vs recorte justo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+      <td>Total</td>
+      <td class="num">164.039.588</td>
+      <td class="num">356.457.528</td>
+      <td class="num down">−54,0%</td>
+      <td class="num">328.401.606</td>
+      <td class="num down">−50,0%</td>
+    </tr><tr>
+      <td>Cache lido</td>
+      <td class="num">152.021.181</td>
+      <td class="num">334.844.519</td>
+      <td class="num down">−54,6%</td>
+      <td class="num">308.283.358</td>
+      <td class="num down">−50,7%</td>
+    </tr><tr>
+      <td>Cache escrito</td>
+      <td class="num">5.979.826</td>
+      <td class="num">12.217.112</td>
+      <td class="num down">−51,1%</td>
+      <td class="num">11.182.313</td>
+      <td class="num down">−46,5%</td>
+    </tr><tr>
+      <td>Prompt (não cacheado)</td>
+      <td class="num">4.489.857</td>
+      <td class="num">7.587.733</td>
+      <td class="num down">−40,8%</td>
+      <td class="num">7.236.836</td>
+      <td class="num down">−38,0%</td>
+    </tr><tr>
+      <td>Saída (completion)</td>
+      <td class="num">1.548.724</td>
+      <td class="num">1.808.164</td>
+      <td class="num down">−14,3%</td>
+      <td class="num">1.699.099</td>
+      <td class="num down">−8,9%</td>
+    </tr><tr>
+      <td>Sem cache (prompt + saída)</td>
+      <td class="num">6.038.581</td>
+      <td class="num">9.395.897</td>
+      <td class="num down">−35,7%</td>
+      <td class="num">8.935.935</td>
+      <td class="num down">−32,4%</td>
+    </tr><tr>
+      <td>Eventos</td>
+      <td class="num">1.462</td>
+      <td class="num">2.917</td>
+      <td class="num down">−49,9%</td>
+      <td class="num">2.684</td>
+      <td class="num down">−45,5%</td>
+    </tr><tr>
+      <td>Cache lido (% do total)</td>
+      <td class="num">92,7%</td>
+      <td class="num">93,9%</td>
+      <td class="num down">−1,3 p.p.</td>
+      <td class="num">93,9%</td>
+      <td class="num down">−1,2 p.p.</td>
+    </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nota">
+      Usage Type nos dois dias: só <code>included</code>
+      (1.462 eventos no dia 13 parcial,
+      2.917 no dia 8 inteiro).
+      O custo contratado no CSV é 0,00 USD nessas linhas, porque o uso entra no plano.
+    </p>
+  </section>
+
+  <section id="modelos">
+    <h2>Por produto e modelo</h2>
+    <ul class="legend">
+      <li><i class="sw-cache"></i>Cache lido</li>
+      <li><i class="sw-fresh"></i>Sem cache (prompt + saída)</li>
+      <li><i class="sw-write"></i>Cache escrito</li>
+    </ul>
+    <h2 style="font-size:1rem;margin-top:4px">Dia 13 (parcial, até 19h43:59)</h2>
+    <div class="wrap">
+      <svg viewBox="0 0 920 314" width="100%" role="img" aria-label="Ranking por produto e modelo no dia 13 disponível.">
+<line x1="250.0" y1="16" x2="250.0" y2="286" class="grid"/>
+<text x="250.0" y="306" class="tick" text-anchor="middle">0</text>
+<line x1="407.5" y1="16" x2="407.5" y2="286" class="grid"/>
+<text x="407.5" y="306" class="tick" text-anchor="middle">30 mi</text>
+<line x1="565.0" y1="16" x2="565.0" y2="286" class="grid"/>
+<text x="565.0" y="306" class="tick" text-anchor="middle">60 mi</text>
+<line x1="722.5" y1="16" x2="722.5" y2="286" class="grid"/>
+<text x="722.5" y="306" class="tick" text-anchor="middle">90 mi</text>
+<line x1="880.0" y1="16" x2="880.0" y2="286" class="grid"/>
+<text x="880.0" y="306" class="tick" text-anchor="middle">120 mi</text>
+<rect x="250.0" y="27.0" width="523.7" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 99.743.483</title></rect>
+<rect x="773.7" y="27.0" width="10.9" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 2.082.735</title></rect>
+<rect x="784.6" y="27.0" width="31.3" height="32" rx="3" fill="var(--write)"><title>Cache escrito: 5.955.742</title></rect>
+<text x="240" y="47.0" class="ylab" text-anchor="end">grok-bot / não informado</text>
+<text x="823.9" y="47.0" class="barlab">107.781.960</text>
+<rect x="250.0" y="81.0" width="247.2" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 47.082.624</title></rect>
+<rect x="497.2" y="81.0" width="19.2" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 3.649.852</title></rect>
+<text x="240" y="101.0" class="ylab" text-anchor="end">cursor / grok-4.7-high</text>
+<text x="524.3" y="101.0" class="barlab">50.732.476</text>
+<rect x="250.0" y="135.0" width="25.7" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 4.892.160</title></rect>
+<rect x="275.7" y="135.0" width="1.5" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 281.538</title></rect>
+<text x="240" y="155.0" class="ylab" text-anchor="end">cursor / grok-4.7-high-fast</text>
+<text x="285.2" y="155.0" class="barlab">5.173.698</text>
+<rect x="250.0" y="189.0" width="1.6" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 302.914</title></rect>
+<rect x="251.6" y="189.0" width="0.5" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 2.392</title></rect>
+<rect x="251.6" y="189.0" width="0.5" height="32" rx="3" fill="var(--write)"><title>Cache escrito: 24.084</title></rect>
+<text x="240" y="209.0" class="ylab" text-anchor="end">cursor / claude-4.5-sonnet</text>
+<text x="259.7" y="209.0" class="barlab">329.390</text>
+<rect x="250.0" y="243.0" width="0.5" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 22.064</title></rect>
+<text x="240" y="263.0" class="ylab" text-anchor="end">cursor / gemini-3.1-pro</text>
+<text x="258.1" y="263.0" class="barlab">22.064</text>
+</svg>
+    </div>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Produto</th><th>Modelo</th>
+            <th class="num">Eventos</th><th class="num">Total</th>
+            <th class="num">Cache lido</th><th class="num">Cache lido %</th>
+            <th class="num">Cache escrito</th><th class="num">Sem cache</th>
+            <th class="num">Fatia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+      <td>1</td>
+      <td>grok-bot</td>
+      <td>não informado</td>
+      <td class="num">1.078</td>
+      <td class="num">107.781.960</td>
+      <td class="num">99.743.483</td>
+      <td class="num">92,5%</td>
+      <td class="num">5.955.742</td>
+      <td class="num">2.082.735</td>
+      <td class="num">65,7%</td>
+    </tr>
+<tr>
+      <td>2</td>
+      <td>cursor</td>
+      <td>grok-4.7-high</td>
+      <td class="num">310</td>
+      <td class="num">50.732.476</td>
+      <td class="num">47.082.624</td>
+      <td class="num">92,8%</td>
+      <td class="num">0</td>
+      <td class="num">3.649.852</td>
+      <td class="num">30,9%</td>
+    </tr>
+<tr>
+      <td>3</td>
+      <td>cursor</td>
+      <td>grok-4.7-high-fast</td>
+      <td class="num">54</td>
+      <td class="num">5.173.698</td>
+      <td class="num">4.892.160</td>
+      <td class="num">94,6%</td>
+      <td class="num">0</td>
+      <td class="num">281.538</td>
+      <td class="num">3,2%</td>
+    </tr>
+<tr>
+      <td>4</td>
+      <td>cursor</td>
+      <td>claude-4.5-sonnet</td>
+      <td class="num">19</td>
+      <td class="num">329.390</td>
+      <td class="num">302.914</td>
+      <td class="num">92,0%</td>
+      <td class="num">24.084</td>
+      <td class="num">2.392</td>
+      <td class="num">0,2%</td>
+    </tr>
+<tr>
+      <td>5</td>
+      <td>cursor</td>
+      <td>gemini-3.1-pro</td>
+      <td class="num">1</td>
+      <td class="num">22.064</td>
+      <td class="num">0</td>
+      <td class="num">0,0%</td>
+      <td class="num">0</td>
+      <td class="num">22.064</td>
+      <td class="num">0,0%</td>
+    </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 style="font-size:1rem;margin-top:22px">Dia 8 inteiro (até 20h42:15)</h2>
+    <div class="wrap">
+      <svg viewBox="0 0 920 206" width="100%" role="img" aria-label="Ranking por produto e modelo no dia 8 completo no arquivo.">
+<line x1="250.0" y1="16" x2="250.0" y2="178" class="grid"/>
+<text x="250.0" y="198" class="tick" text-anchor="middle">0</text>
+<line x1="407.5" y1="16" x2="407.5" y2="178" class="grid"/>
+<text x="407.5" y="198" class="tick" text-anchor="middle">60 mi</text>
+<line x1="565.0" y1="16" x2="565.0" y2="178" class="grid"/>
+<text x="565.0" y="198" class="tick" text-anchor="middle">120 mi</text>
+<line x1="722.5" y1="16" x2="722.5" y2="178" class="grid"/>
+<text x="722.5" y="198" class="tick" text-anchor="middle">180 mi</text>
+<line x1="880.0" y1="16" x2="880.0" y2="178" class="grid"/>
+<text x="880.0" y="198" class="tick" text-anchor="middle">240 mi</text>
+<rect x="250.0" y="27.0" width="571.2" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 217.604.839</title></rect>
+<rect x="821.2" y="27.0" width="4.3" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 1.651.709</title></rect>
+<rect x="825.5" y="27.0" width="32.1" height="32" rx="3" fill="var(--write)"><title>Cache escrito: 12.217.112</title></rect>
+<text x="240" y="47.0" class="ylab" text-anchor="end">grok-bot / não informado</text>
+<text x="865.6" y="47.0" class="barlab">231.473.660</text>
+<rect x="250.0" y="81.0" width="307.3" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 117.049.984</title></rect>
+<rect x="557.3" y="81.0" width="20.1" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 7.657.991</title></rect>
+<text x="240" y="101.0" class="ylab" text-anchor="end">cursor / grok-4.7-high-fast</text>
+<text x="585.4" y="101.0" class="barlab">124.707.975</text>
+<rect x="250.0" y="135.0" width="0.5" height="32" rx="3" fill="var(--cache)"><title>Cache lido: 189.696</title></rect>
+<rect x="250.5" y="135.0" width="0.5" height="32" rx="3" fill="var(--fresh)"><title>Sem cache: 86.197</title></rect>
+<text x="240" y="155.0" class="ylab" text-anchor="end">cursor / grok-4.7-high</text>
+<text x="258.7" y="155.0" class="barlab">275.893</text>
+</svg>
+    </div>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Produto</th><th>Modelo</th>
+            <th class="num">Eventos</th><th class="num">Total</th>
+            <th class="num">Cache lido</th><th class="num">Cache lido %</th>
+            <th class="num">Cache escrito</th><th class="num">Sem cache</th>
+            <th class="num">Fatia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+      <td>1</td>
+      <td>grok-bot</td>
+      <td>não informado</td>
+      <td class="num">2.228</td>
+      <td class="num">231.473.660</td>
+      <td class="num">217.604.839</td>
+      <td class="num">94,0%</td>
+      <td class="num">12.217.112</td>
+      <td class="num">1.651.709</td>
+      <td class="num">64,9%</td>
+    </tr>
+<tr>
+      <td>2</td>
+      <td>cursor</td>
+      <td>grok-4.7-high-fast</td>
+      <td class="num">683</td>
+      <td class="num">124.707.975</td>
+      <td class="num">117.049.984</td>
+      <td class="num">93,9%</td>
+      <td class="num">0</td>
+      <td class="num">7.657.991</td>
+      <td class="num">35,0%</td>
+    </tr>
+<tr>
+      <td>3</td>
+      <td>cursor</td>
+      <td>grok-4.7-high</td>
+      <td class="num">6</td>
+      <td class="num">275.893</td>
+      <td class="num">189.696</td>
+      <td class="num">68,8%</td>
+      <td class="num">0</td>
+      <td class="num">86.197</td>
+      <td class="num">0,1%</td>
+    </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nota">
+      Modelo vazio no CSV entra como “não informado”. Isso vale para todas as linhas de <code>grok-bot</code> nos dois dias.
+      No produto <code>cursor</code>, o dia 8 foi dominado por <code>grok-4.7-high-fast</code>
+      (124.707.975 tokens);
+      no dia 13 o tráfego aparece sobretudo como <code>grok-4.7-high</code>
+      (50.732.476 tokens),
+      com fatias menores de <code>grok-4.7-high-fast</code>, <code>claude-4.5-sonnet</code> e <code>gemini-3.1-pro</code>.
+    </p>
+  </section>
+
+  <section id="hora">
+    <h2>Série por hora (America/Bahia), lado a lado</h2>
+    <ul class="legend">
+      <li><i class="sw-now"></i>13/11 (parcial, até 19h43)</li>
+      <li><i class="sw-ref"></i>8/11 até 19h43:59</li>
+      <li><i class="sw-after"></i>8/11 depois das 19h43 (até 20h42)</li>
+    </ul>
+    <p class="nota">
+      Pico do dia 13 disponível: 17h–18h, com 39.674.338 tokens.
+      Pico do dia 8: 02h–03h, com 64.436.764 tokens.
+      Horas sem evento (dia 13: 01h–06h, 08h–09h e tudo depois das 19h43; dia 8: 04h–06h, 08h e 16h) entram como zero.
+    </p>
+    <div class="wrap">
+      <svg viewBox="0 0 920 300" width="100%" role="img" aria-label="Tokens por hora no calendário America/Bahia: dia 13 parcial até 19h43 e dia 8 até 20h42, com o trecho do dia 8 depois das 19h43 em tom distinto.">
+<line x1="64" y1="248.0" x2="904" y2="248.0" class="grid"/>
+<text x="56" y="252.0" class="tick" text-anchor="end">0</text>
+<line x1="64" y1="190.5" x2="904" y2="190.5" class="grid"/>
+<text x="56" y="194.5" class="tick" text-anchor="end">20 mi</text>
+<line x1="64" y1="133.0" x2="904" y2="133.0" class="grid"/>
+<text x="56" y="137.0" class="tick" text-anchor="end">40 mi</text>
+<line x1="64" y1="75.5" x2="904" y2="75.5" class="grid"/>
+<text x="56" y="79.5" class="tick" text-anchor="end">60 mi</text>
+<line x1="64" y1="18.0" x2="904" y2="18.0" class="grid"/>
+<text x="56" y="22.0" class="tick" text-anchor="end">80 mi</text>
+<line x1="64" y1="18" x2="64" y2="248" class="axis"/>
+<line x1="64" y1="248" x2="904" y2="248" class="axis"/>
+<rect x="824.0" y="18" width="80.0" height="230" fill="rgba(224, 122, 47, 0.10)"><title>Depois das 19h43: o dia 13 não tem dado; o dia 8 segue até 20h42</title></rect>
+<rect x="68.1" y="119.5" width="14.4" height="128.5" rx="1.5" fill="var(--ref)"><title>8/11 00h até 19h43: 44.700.292</title></rect>
+<rect x="85.5" y="210.4" width="14.4" height="37.6" rx="1.5" fill="var(--now)"><title>13/11 00h: 13.071.804</title></rect>
+<text x="84.0" y="264" class="xlab" text-anchor="middle">00h</text>
+<rect x="108.1" y="187.5" width="14.4" height="60.5" rx="1.5" fill="var(--ref)"><title>8/11 01h até 19h43: 21.042.325</title></rect>
+<rect x="148.1" y="62.7" width="14.4" height="185.3" rx="1.5" fill="var(--ref)"><title>8/11 02h até 19h43: 64.436.764</title></rect>
+<rect x="188.1" y="222.9" width="14.4" height="25.1" rx="1.5" fill="var(--ref)"><title>8/11 03h até 19h43: 8.743.042</title></rect>
+<text x="204.0" y="264" class="xlab" text-anchor="middle">03h</text>
+<text x="324.0" y="264" class="xlab" text-anchor="middle">06h</text>
+<rect x="348.1" y="247.7" width="14.4" height="0.3" rx="1.5" fill="var(--ref)"><title>8/11 07h até 19h43: 96.111</title></rect>
+<rect x="365.5" y="247.5" width="14.4" height="0.5" rx="1.5" fill="var(--now)"><title>13/11 07h: 188.234</title></rect>
+<rect x="428.1" y="189.9" width="14.4" height="58.1" rx="1.5" fill="var(--ref)"><title>8/11 09h até 19h43: 20.200.277</title></rect>
+<text x="444.0" y="264" class="xlab" text-anchor="middle">09h</text>
+<rect x="468.1" y="128.3" width="14.4" height="119.7" rx="1.5" fill="var(--ref)"><title>8/11 10h até 19h43: 41.623.344</title></rect>
+<rect x="485.5" y="247.7" width="14.4" height="0.3" rx="1.5" fill="var(--now)"><title>13/11 10h: 95.398</title></rect>
+<rect x="508.1" y="153.0" width="14.4" height="95.0" rx="1.5" fill="var(--ref)"><title>8/11 11h até 19h43: 33.046.944</title></rect>
+<rect x="525.5" y="247.7" width="14.4" height="0.3" rx="1.5" fill="var(--now)"><title>13/11 11h: 96.468</title></rect>
+<rect x="548.1" y="208.0" width="14.4" height="40.0" rx="1.5" fill="var(--ref)"><title>8/11 12h até 19h43: 13.905.521</title></rect>
+<rect x="565.5" y="238.9" width="14.4" height="9.1" rx="1.5" fill="var(--now)"><title>13/11 12h: 3.180.846</title></rect>
+<text x="564.0" y="264" class="xlab" text-anchor="middle">12h</text>
+<rect x="588.1" y="236.9" width="14.4" height="11.1" rx="1.5" fill="var(--ref)"><title>8/11 13h até 19h43: 3.863.649</title></rect>
+<rect x="605.5" y="231.5" width="14.4" height="16.5" rx="1.5" fill="var(--now)"><title>13/11 13h: 5.732.809</title></rect>
+<rect x="628.1" y="230.7" width="14.4" height="17.3" rx="1.5" fill="var(--ref)"><title>8/11 14h até 19h43: 6.007.957</title></rect>
+<rect x="645.5" y="177.3" width="14.4" height="70.7" rx="1.5" fill="var(--now)"><title>13/11 14h: 24.606.812</title></rect>
+<rect x="668.1" y="190.3" width="14.4" height="57.7" rx="1.5" fill="var(--ref)"><title>8/11 15h até 19h43: 20.064.859</title></rect>
+<rect x="685.5" y="219.3" width="14.4" height="28.7" rx="1.5" fill="var(--now)"><title>13/11 15h: 9.997.780</title></rect>
+<text x="684.0" y="264" class="xlab" text-anchor="middle">15h</text>
+<rect x="725.5" y="149.9" width="14.4" height="98.1" rx="1.5" fill="var(--now)"><title>13/11 16h: 34.108.393</title></rect>
+<rect x="748.1" y="240.2" width="14.4" height="7.8" rx="1.5" fill="var(--ref)"><title>8/11 17h até 19h43: 2.714.432</title></rect>
+<rect x="765.5" y="133.9" width="14.4" height="114.1" rx="1.5" fill="var(--now)"><title>13/11 17h: 39.674.338</title></rect>
+<rect x="788.1" y="178.9" width="14.4" height="69.1" rx="1.5" fill="var(--ref)"><title>8/11 18h até 19h43: 24.046.457</title></rect>
+<rect x="805.5" y="187.9" width="14.4" height="60.1" rx="1.5" fill="var(--now)"><title>13/11 18h: 20.894.207</title></rect>
+<text x="804.0" y="264" class="xlab" text-anchor="middle">18h</text>
+<rect x="828.1" y="179.3" width="14.4" height="68.7" rx="1.5" fill="var(--ref)"><title>8/11 19h até 19h43: 23.909.632</title></rect>
+<rect x="828.1" y="172.9" width="14.4" height="6.4" rx="1.5" fill="var(--after)"><title>8/11 19h depois das 19h43: 2.228.076</title></rect>
+<rect x="845.5" y="212.4" width="14.4" height="35.6" rx="1.5" fill="var(--now)"><title>13/11 19h: 12.392.499</title></rect>
+<rect x="868.1" y="173.7" width="14.4" height="74.3" rx="1.5" fill="var(--after)"><title>8/11 20h depois das 19h43: 25.827.846</title></rect>
+<text x="460.0" y="294" class="axis-title" text-anchor="middle">Horário em America/Bahia (UTC-3). Faixa âmbar: depois das 19h43, só o dia 8 tem dado (até 20h42). Horas sem evento entram como zero.</text>
+</svg>
+    </div>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Hora (Bahia)</th>
+            <th class="num">Evt. 13</th>
+            <th class="num">Tokens 13 (parcial)</th>
+            <th class="num">Evt. 8 inteiro</th>
+            <th class="num">Tokens 8 inteiro</th>
+            <th class="num">Evt. 8 até 19h43</th>
+            <th class="num">Tokens 8 até 19h43</th>
+            <th class="num">Var. vs recorte justo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+      <td>00h–01h</td>
+      <td class="num">142</td>
+      <td class="num">13.071.804</td>
+      <td class="num">436</td>
+      <td class="num">44.700.292</td>
+      <td class="num">436</td>
+      <td class="num">44.700.292</td>
+      <td class="num down">−70,8%</td>
+    </tr><tr>
+      <td>01h–02h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">224</td>
+      <td class="num">21.042.325</td>
+      <td class="num">224</td>
+      <td class="num">21.042.325</td>
+      <td class="num down">−100,0%</td>
+    </tr><tr>
+      <td>02h–03h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">454</td>
+      <td class="num">64.436.764</td>
+      <td class="num">454</td>
+      <td class="num">64.436.764</td>
+      <td class="num down">−100,0%</td>
+    </tr><tr>
+      <td>03h–04h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">70</td>
+      <td class="num">8.743.042</td>
+      <td class="num">70</td>
+      <td class="num">8.743.042</td>
+      <td class="num down">−100,0%</td>
+    </tr><tr>
+      <td>04h–05h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num flat">—</td>
+    </tr><tr>
+      <td>05h–06h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num flat">—</td>
+    </tr><tr>
+      <td>06h–07h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num flat">—</td>
+    </tr><tr>
+      <td>07h–08h</td>
+      <td class="num">2</td>
+      <td class="num">188.234</td>
+      <td class="num">1</td>
+      <td class="num">96.111</td>
+      <td class="num">1</td>
+      <td class="num">96.111</td>
+      <td class="num up">+95,9%</td>
+    </tr><tr>
+      <td>08h–09h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num flat">—</td>
+    </tr><tr>
+      <td>09h–10h</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">150</td>
+      <td class="num">20.200.277</td>
+      <td class="num">150</td>
+      <td class="num">20.200.277</td>
+      <td class="num down">−100,0%</td>
+    </tr><tr>
+      <td>10h–11h</td>
+      <td class="num">1</td>
+      <td class="num">95.398</td>
+      <td class="num">348</td>
+      <td class="num">41.623.344</td>
+      <td class="num">348</td>
+      <td class="num">41.623.344</td>
+      <td class="num down">−99,8%</td>
+    </tr><tr>
+      <td>11h–12h</td>
+      <td class="num">1</td>
+      <td class="num">96.468</td>
+      <td class="num">236</td>
+      <td class="num">33.046.944</td>
+      <td class="num">236</td>
+      <td class="num">33.046.944</td>
+      <td class="num down">−99,7%</td>
+    </tr><tr>
+      <td>12h–13h</td>
+      <td class="num">32</td>
+      <td class="num">3.180.846</td>
+      <td class="num">87</td>
+      <td class="num">13.905.521</td>
+      <td class="num">87</td>
+      <td class="num">13.905.521</td>
+      <td class="num down">−77,1%</td>
+    </tr><tr>
+      <td>13h–14h</td>
+      <td class="num">57</td>
+      <td class="num">5.732.809</td>
+      <td class="num">55</td>
+      <td class="num">3.863.649</td>
+      <td class="num">55</td>
+      <td class="num">3.863.649</td>
+      <td class="num up">+48,4%</td>
+    </tr><tr>
+      <td>14h–15h</td>
+      <td class="num">216</td>
+      <td class="num">24.606.812</td>
+      <td class="num">33</td>
+      <td class="num">6.007.957</td>
+      <td class="num">33</td>
+      <td class="num">6.007.957</td>
+      <td class="num up">+309,6%</td>
+    </tr><tr>
+      <td>15h–16h</td>
+      <td class="num">93</td>
+      <td class="num">9.997.780</td>
+      <td class="num">100</td>
+      <td class="num">20.064.859</td>
+      <td class="num">100</td>
+      <td class="num">20.064.859</td>
+      <td class="num down">−50,2%</td>
+    </tr><tr>
+      <td>16h–17h</td>
+      <td class="num">339</td>
+      <td class="num">34.108.393</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num flat">—</td>
+    </tr><tr>
+      <td>17h–18h</td>
+      <td class="num">259</td>
+      <td class="num">39.674.338</td>
+      <td class="num">40</td>
+      <td class="num">2.714.432</td>
+      <td class="num">40</td>
+      <td class="num">2.714.432</td>
+      <td class="num up">+1361,6%</td>
+    </tr><tr>
+      <td>18h–19h</td>
+      <td class="num">169</td>
+      <td class="num">20.894.207</td>
+      <td class="num">209</td>
+      <td class="num">24.046.457</td>
+      <td class="num">209</td>
+      <td class="num">24.046.457</td>
+      <td class="num down">−13,1%</td>
+    </tr><tr>
+      <td>19h–20h *</td>
+      <td class="num">151</td>
+      <td class="num">12.392.499</td>
+      <td class="num">261</td>
+      <td class="num">26.137.708</td>
+      <td class="num">241</td>
+      <td class="num">23.909.632</td>
+      <td class="num down">−48,2%</td>
+    </tr><tr>
+      <td>20h–21h †</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num">213</td>
+      <td class="num">25.827.846</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+      <td class="num flat">—</td>
+    </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nota">
+      * Na hora 19h–20h, o dia 13 cobre só até 19h43:59; o dia 8 inteiro segue até 19h59, mas a coluna “até 19h43” usa o mesmo corte.
+      † A hora 20h–21h existe só no dia 8 (até 20h42:15). No dia 13 não há dado. A variação dessa linha é contra zero no recorte justo e por isso aparece como traço.
+    </p>
+  </section>
+
+  <section id="manha-tarde">
+    <h2>Manhã e tarde, para não misturar os recortes</h2>
+    <p class="nota">
+      A queda do dia inteiro e a alta da tarde (painel das 14h) convivem porque a manhã do dia 8 foi muito mais pesada.
+    </p>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Faixa (America/Bahia)</th>
+            <th class="num">Tokens 13/11</th>
+            <th class="num">Eventos 13</th>
+            <th class="num">Tokens 8/11</th>
+            <th class="num">Eventos 8</th>
+            <th class="num">Variação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>00h até 13h59 (manhã)</td>
+            <td class="num">22.365.559</td>
+            <td class="num">235</td>
+            <td class="num">251.658.269</td>
+            <td class="num">2.061</td>
+            <td class="num down">−91,1%</td>
+          </tr>
+          <tr>
+            <td>14h00 às 19h43:59 (tarde, mesmo relógio)</td>
+            <td class="num">141.674.029</td>
+            <td class="num">1.227</td>
+            <td class="num">76.743.337</td>
+            <td class="num">623</td>
+            <td class="num up">+84,6%</td>
+          </tr>
+          <tr>
+            <td>19h44 às 20h42:15 (só o dia 8 tem dado)</td>
+            <td class="num">sem dado</td>
+            <td class="num">—</td>
+            <td class="num">28.055.922</td>
+            <td class="num">233</td>
+            <td class="num flat">não comparável</td>
+          </tr>
+          <tr class="total">
+            <td>Dia disponível no arquivo</td>
+            <td class="num">164.039.588 (parcial até 19h43)</td>
+            <td class="num">1.462</td>
+            <td class="num">356.457.528 (até 20h42)</td>
+            <td class="num">2.917</td>
+            <td class="num down">−54,0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="fontes">
+    <h2>Fontes e o que este painel não mede</h2>
+    <ul class="notas">
+      <li>
+        <strong>Dia 13:</strong> CSV unificado anexado pelo Elienaldo
+        (<code>personal-unified-usage-2026-11-13.csv</code>), recortado ao calendário America/Bahia.
+        O resumo diário anexado (<code>usage-day-2026-11-13-2026-11-13.csv</code>) é o dia UTC
+        (Cursor 56.257.628 + Grok Bot 117.710.964 = 173.968.592)
+        e inclui a noite de 12/11 no fuso Bahia; por isso não é o total deste painel.
+      </li>
+      <li>
+        <strong>Dia 8:</strong> o mesmo CSV unificado da auditoria que alimentou
+        <code>dashboard-consumo-08-11.html</code>
+        (arquivo no box: <code>/workspace/audit-1112/usage-new.csv</code>).
+        Os totais do dia 8 inteiro neste painel
+        (2.917 eventos, 356.457.528 tokens, cache lido 93,9%,
+        das 00h00:01 às 20h42:15) são idênticos aos publicados naquela auditoria.
+      </li>
+      <li>
+        O CSV distingue o produto <code>grok-bot</code> do produto <code>cursor</code>,
+        mas não nomeia qual bot gerou cada linha de <code>grok-bot</code> e não separa
+        agente em nuvem de IDE dentro de <code>cursor</code>.
+      </li>
+      <li>
+        A exportação do dia 13 termina às 19h43:59 America/Bahia; não há como completar o dia 13 com este arquivo.
+        A do dia 8 termina às 20h42:15; também não cobre o resto da noite daquele dia.
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    Gerado em 13/11/2026 às 20h01:13 (America/Bahia), a partir dos CSVs brutos.
+    Definições iguais às da auditoria do dia 8 e ao painel das 14h.
+    Nada arredondado por aproximação falada:
+    o cache lido no dia 13 disponível é 92,7% de 164.039.588.
+  </footer>
+</main>
+</body>
+</html>
